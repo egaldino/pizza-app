@@ -6,6 +6,7 @@ import {
   FlatList,
   StyleSheet,
   View,
+  Alert,
 } from 'react-native';
 import ParticipanteItem from '../components/ParticipanteItem';
 
@@ -66,6 +67,24 @@ const Home = () => {
     setListaParticipantes(listaAtualizada);
   };
 
+  const questionarRemoverParticipante = (participanteParaRemover) => {
+    Alert.alert(
+      'Remover',
+      `Deseja remover o ${participanteParaRemover.nome}`,
+      [
+        {
+          text: 'Cancelar',
+          style: 'cancel',
+        },
+        {
+          text: 'OK',
+          onPress: () => removerParticipante(participanteParaRemover),
+        },
+      ],
+      {cancelable: false},
+    );
+  };
+
   const removerParticipante = (participanteParaRemover) => {
     const listaSemParticipante = listaParticipantes.filter(
       (participante) => participante.id !== participanteParaRemover.id,
@@ -101,7 +120,7 @@ const Home = () => {
               index={index}
               subtrairQuantidade={() => subtrairQuantidade(item)}
               somarQuantidade={() => somarQuantidade(item)}
-              removerParticipante={() => removerParticipante(item)}
+              removerParticipante={() => questionarRemoverParticipante(item)}
             />
           )}
         />
