@@ -11,20 +11,20 @@ import ParticipanteItem from '../components/ParticipanteItem';
 
 import colors from '../colors.json';
 
+const corAleatoria = () => {
+  const cores = colors.participantes;
+  const indiceAleatorio = Math.floor(Math.random() * cores.length);
+  return cores[indiceAleatorio];
+};
+
 const Home = () => {
   const [listaParticipantes, setListaParticipantes] = useState([
-    {id: 1, nome: 'Edson', quantidade: 3, borderColor: '#c2f0cf'},
-    {id: 2, nome: 'Gabriel', quantidade: 5, borderColor: '#c1f0f5'},
+    {id: 1, nome: 'Edson', quantidade: 3, borderColor: corAleatoria()},
+    {id: 2, nome: 'Gabriel', quantidade: 5, borderColor: corAleatoria()},
   ]);
   // const nomeInputRef = useRef('');
 
   const [novoParticipante, setNovoParticipante] = useState();
-
-  const corAleatoria = () => {
-    const cores = colors.participantes;
-    const indiceAleatorio = Math.floor(Math.random() * cores.length);
-    return cores[indiceAleatorio];
-  };
 
   const addParticipante = (nome) => {
     if (!nome || nome.length === 0) {
@@ -66,6 +66,14 @@ const Home = () => {
     setListaParticipantes(listaAtualizada);
   };
 
+  const removerParticipante = (participanteParaRemover) => {
+    const listaSemParticipante = listaParticipantes.filter(
+      (participante) => participante.id !== participanteParaRemover.id,
+    );
+
+    setListaParticipantes(listaSemParticipante);
+  };
+
   return (
     <View style={styles.appBackground}>
       <View style={styles.container}>
@@ -93,6 +101,7 @@ const Home = () => {
               index={index}
               subtrairQuantidade={() => subtrairQuantidade(item)}
               somarQuantidade={() => somarQuantidade(item)}
+              removerParticipante={() => removerParticipante(item)}
             />
           )}
         />
@@ -103,6 +112,7 @@ const Home = () => {
 
 const styles = StyleSheet.create({
   appBackground: {
+    paddingTop: 20,
     backgroundColor: colors.appBackground,
     flex: 1,
   },
@@ -110,17 +120,20 @@ const styles = StyleSheet.create({
     margin: 5,
   },
   textInput: {
-    borderWidth: 2,
+    borderWidth: 1,
     borderRadius: 10,
     marginHorizontal: 10,
+    borderColor: colors.cinzaClaro,
+    backgroundColor: colors.cinzaClaro,
+    paddingLeft: 15,
   },
   addButton: {
-    margin: 5,
+    margin: 10,
     marginHorizontal: 10,
     backgroundColor: colors.primaria,
     alignItems: 'center',
     justifyContent: 'center',
-    height: 30,
+    height: 40,
     borderRadius: 15,
     elevation: 3,
   },

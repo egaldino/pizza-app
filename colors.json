@@ -1,7 +1,7 @@
 {
   "appBackground": "#eee",
-  "primaria": "#1c943d",
-  "secundaria": "#32a852",
-  "alterarQuantidadeUnderlay": "#d9dcde",
-  "participantes": ["#c2f0cf", "#c1f0f5", "#f5dcf7"]
+  "primaria": "#D31122",
+  "secundaria": "#F1202B",
+  "cinzaClaro": "#d9dcde",
+  "participantes": ["#EA5A3E", "#FB6D4C", "#C23B22", "#FFD1A9"]
 }
