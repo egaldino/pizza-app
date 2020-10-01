@@ -9,23 +9,65 @@ import {
 } from 'react-native';
 import ParticipanteItem from '../components/ParticipanteItem';
 
+import colors from '../colors.json';
+
 const Home = () => {
-  const [listaParticipantes, setListaParticipantes] = useState([]);
+  const [listaParticipantes, setListaParticipantes] = useState([
+    {id: 1, nome: 'Edson', quantidade: 3, borderColor: '#c2f0cf'},
+    {id: 2, nome: 'Gabriel', quantidade: 5, borderColor: '#c1f0f5'},
+  ]);
   // const nomeInputRef = useRef('');
 
   const [novoParticipante, setNovoParticipante] = useState();
 
-  const addParticipante = (participante) => {
-    if (!participante || participante.length === 0) {
+  const corAleatoria = () => {
+    const cores = colors.participantes;
+    const indiceAleatorio = Math.floor(Math.random() * cores.length);
+    return cores[indiceAleatorio];
+  };
+
+  const addParticipante = (nome) => {
+    if (!nome || nome.length === 0) {
       return;
     }
 
-    setListaParticipantes([...listaParticipantes, participante]);
+    setListaParticipantes([
+      ...listaParticipantes,
+      {
+        id: listaParticipantes.length + 1,
+        nome,
+        quantidade: 0,
+        borderColor: corAleatoria(),
+      },
+    ]);
     setNovoParticipante('');
   };
 
+  const subtrairQuantidade = (item) => {
+    const listaAtualizada = listaParticipantes.map((participante) => {
+      if (participante.id === item.id) {
+        return {
+          ...participante,
+          quantidade: item.quantidade === 0 ? 0 : item.quantidade - 1,
+        };
+      }
+      return participante;
+    });
+    setListaParticipantes(listaAtualizada);
+  };
+
+  const somarQuantidade = (item) => {
+    const listaAtualizada = listaParticipantes.map((participante) => {
+      if (participante.id === item.id) {
+        return {...participante, quantidade: item.quantidade + 1};
+      }
+      return participante;
+    });
+    setListaParticipantes(listaAtualizada);
+  };
+
   return (
-    <View style={{backgroundColor: '#eee', flex: 1}}>
+    <View style={styles.appBackground}>
       <View style={styles.container}>
         <TextInput
           style={styles.textInput}
@@ -37,6 +79,7 @@ const Home = () => {
 
         <TouchableHighlight
           style={styles.addButton}
+          underlayColor={colors.secundaria}
           onPress={() => addParticipante(novoParticipante)}>
           <Text style={styles.addButtonText}>Adicionar</Text>
         </TouchableHighlight>
@@ -45,7 +88,12 @@ const Home = () => {
           data={listaParticipantes}
           contentContainerStyle={styles.listaParticipantes}
           renderItem={({item, index}) => (
-            <ParticipanteItem item={item} index={index} />
+            <ParticipanteItem
+              item={item}
+              index={index}
+              subtrairQuantidade={() => subtrairQuantidade(item)}
+              somarQuantidade={() => somarQuantidade(item)}
+            />
           )}
         />
       </View>
@@ -54,6 +102,10 @@ const Home = () => {
 };
 
 const styles = StyleSheet.create({
+  appBackground: {
+    backgroundColor: colors.appBackground,
+    flex: 1,
+  },
   container: {
     margin: 5,
   },
@@ -65,7 +117,7 @@ const styles = StyleSheet.create({
   addButton: {
     margin: 5,
     marginHorizontal: 10,
-    backgroundColor: '#1c943d',
+    backgroundColor: colors.primaria,
     alignItems: 'center',
     justifyContent: 'center',
     height: 30,
