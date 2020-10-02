@@ -2,6 +2,7 @@
   "appBackground": "#eee",
   "primaria": "#D31122",
   "secundaria": "#F1202B",
+  "primariaDark": "#a80c19",
   "cinzaClaro": "#d9dcde",
   "participantes": ["#EA5A3E", "#FB6D4C", "#C23B22", "#FFD1A9"]
 }

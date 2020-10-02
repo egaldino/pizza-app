@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   Text,
   TextInput,
@@ -7,6 +7,8 @@ import {
   StyleSheet,
   View,
   Alert,
+  StatusBar,
+  ScrollView,
 } from 'react-native';
 import ParticipanteItem from '../components/ParticipanteItem';
 
@@ -19,20 +21,30 @@ const corAleatoria = () => {
 };
 
 const Home = () => {
-  const [listaParticipantes, setListaParticipantes] = useState([
-    {id: 1, nome: 'Edson', quantidade: 3, borderColor: corAleatoria()},
-    {id: 2, nome: 'Gabriel', quantidade: 5, borderColor: corAleatoria()},
-  ]);
-  // const nomeInputRef = useRef('');
-
+  const [listaParticipantes, setListaParticipantes] = useState([]);
   const [novoParticipante, setNovoParticipante] = useState();
+
+  const salvarListaOrdenada = (listaDesordenada) => {
+    const listaOrdenada = [...listaDesordenada];
+    listaOrdenada.sort(function (a, b) {
+      if (a.quantidade < b.quantidade) {
+        return 1;
+      }
+      if (a.quantidade > b.quantidade) {
+        return -1;
+      }
+      // a must be equal to b
+      return 0;
+    });
+    setListaParticipantes(listaOrdenada);
+  };
 
   const addParticipante = (nome) => {
     if (!nome || nome.length === 0) {
       return;
     }
 
-    setListaParticipantes([
+    salvarListaOrdenada([
       ...listaParticipantes,
       {
         id: listaParticipantes.length + 1,
@@ -54,7 +66,7 @@ const Home = () => {
       }
       return participante;
     });
-    setListaParticipantes(listaAtualizada);
+    salvarListaOrdenada(listaAtualizada);
   };
 
   const somarQuantidade = (item) => {
@@ -64,13 +76,13 @@ const Home = () => {
       }
       return participante;
     });
-    setListaParticipantes(listaAtualizada);
+    salvarListaOrdenada(listaAtualizada);
   };
 
   const questionarRemoverParticipante = (participanteParaRemover) => {
     Alert.alert(
       'Remover',
-      `Deseja remover o ${participanteParaRemover.nome}`,
+      `Deseja remover ${participanteParaRemover.nome}`,
       [
         {
           text: 'Cancelar',
@@ -94,7 +106,8 @@ const Home = () => {
   };
 
   return (
-    <View style={styles.appBackground}>
+    <ScrollView style={styles.appBackground}>
+      <StatusBar backgroundColor={colors.primariaDark} />
       <View style={styles.container}>
         <TextInput
           style={styles.textInput}
@@ -125,13 +138,14 @@ const Home = () => {
           )}
         />
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   appBackground: {
     paddingTop: 20,
+    paddingBottom: 60,
     backgroundColor: colors.appBackground,
     flex: 1,
   },
