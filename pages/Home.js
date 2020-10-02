@@ -106,51 +106,75 @@ const Home = () => {
   };
 
   return (
-    <ScrollView style={styles.appBackground}>
+    <View style={styles.appBackground}>
       <StatusBar backgroundColor={colors.primariaDark} />
       <View style={styles.container}>
-        <TextInput
-          style={styles.textInput}
-          placeholder="Nome do participante"
-          value={novoParticipante}
-          // ref={nomeInputRef}
-          onChangeText={(textoDigitado) => setNovoParticipante(textoDigitado)}
-        />
+        <View style={styles.containerAdicionar}>
+          <TextInput
+            style={styles.textInput}
+            placeholder="Nome do participante"
+            value={novoParticipante}
+            // ref={nomeInputRef}
+            onChangeText={(textoDigitado) => setNovoParticipante(textoDigitado)}
+          />
 
-        <TouchableHighlight
-          style={styles.addButton}
-          underlayColor={colors.secundaria}
-          onPress={() => addParticipante(novoParticipante)}>
-          <Text style={styles.addButtonText}>Adicionar</Text>
-        </TouchableHighlight>
+          <TouchableHighlight
+            style={styles.addButton}
+            underlayColor={colors.secundaria}
+            onPress={() => addParticipante(novoParticipante)}>
+            <Text style={styles.addButtonText}>Adicionar</Text>
+          </TouchableHighlight>
+        </View>
 
-        <FlatList
-          data={listaParticipantes}
-          contentContainerStyle={styles.listaParticipantes}
-          renderItem={({item, index}) => (
-            <ParticipanteItem
-              item={item}
-              index={index}
-              subtrairQuantidade={() => subtrairQuantidade(item)}
-              somarQuantidade={() => somarQuantidade(item)}
-              removerParticipante={() => questionarRemoverParticipante(item)}
+        <View style={styles.containerListaParticipantes}>
+          <ScrollView>
+            <FlatList
+              data={listaParticipantes}
+              contentContainerStyle={styles.listaParticipantes}
+              renderItem={({item}) => (
+                <ParticipanteItem
+                  item={item}
+                  subtrairQuantidade={() => subtrairQuantidade(item)}
+                  somarQuantidade={() => somarQuantidade(item)}
+                  removerParticipante={() =>
+                    questionarRemoverParticipante(item)
+                  }
+                />
+              )}
             />
-          )}
-        />
+          </ScrollView>
+        </View>
+
+        <View style={styles.containerFinalizar}>
+          <TouchableHighlight
+            style={styles.addButton}
+            underlayColor={colors.secundaria}
+            onPress={() => addParticipante(novoParticipante)}>
+            <Text style={styles.addButtonText}>Finalizar</Text>
+          </TouchableHighlight>
+        </View>
       </View>
-    </ScrollView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   appBackground: {
-    paddingTop: 20,
-    paddingBottom: 60,
     backgroundColor: colors.appBackground,
     flex: 1,
   },
   container: {
-    margin: 5,
+    flex: 1,
+  },
+  containerAdicionar: {
+    flex: 2,
+    justifyContent: 'center',
+  },
+  containerListaParticipantes: {
+    flex: 6,
+  },
+  containerFinalizar: {
+    flex: 1,
   },
   textInput: {
     borderWidth: 1,

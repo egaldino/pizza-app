@@ -6,7 +6,6 @@ import colors from '../colors.json';
 // import { Container } from './styles';
 const ParticipanteItem = ({
   item,
-  index,
   subtrairQuantidade,
   somarQuantidade,
   removerParticipante,
@@ -23,7 +22,7 @@ const ParticipanteItem = ({
           onPress={() => subtrairQuantidade()}>
           <Text>-</Text>
         </TouchableHighlight>
-        <Text key={`${item}${index}`}>
+        <Text key={item.id}>
           {item.nome} ({item.quantidade})
         </Text>
         <TouchableHighlight
