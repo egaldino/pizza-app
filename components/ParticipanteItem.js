@@ -14,7 +14,8 @@ const ParticipanteItem = ({
     <TouchableHighlight
       underlayColor={colors.appBackground}
       style={style.containerTouchable}
-      onLongPress={() => removerParticipante()}>
+      onLongPress={() => removerParticipante()}
+      key={`${item.id}`}>
       <View style={{...style.container, borderColor: item.borderColor}}>
         <TouchableHighlight
           style={style.buttonChangeQuantidade}
@@ -22,7 +23,7 @@ const ParticipanteItem = ({
           onPress={() => subtrairQuantidade()}>
           <Text>-</Text>
         </TouchableHighlight>
-        <Text key={item.id}>
+        <Text>
           {item.nome} ({item.quantidade})
         </Text>
         <TouchableHighlight

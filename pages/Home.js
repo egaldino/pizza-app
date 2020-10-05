@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {
   Text,
   TextInput,
@@ -8,7 +8,6 @@ import {
   View,
   Alert,
   StatusBar,
-  ScrollView,
 } from 'react-native';
 import ParticipanteItem from '../components/ParticipanteItem';
 
@@ -23,6 +22,7 @@ const corAleatoria = () => {
 const Home = () => {
   const [listaParticipantes, setListaParticipantes] = useState([]);
   const [novoParticipante, setNovoParticipante] = useState();
+  const [ultimoIdGerado, setUltimoIdGerado] = useState(0);
 
   const salvarListaOrdenada = (listaDesordenada) => {
     const listaOrdenada = [...listaDesordenada];
@@ -44,16 +44,19 @@ const Home = () => {
       return;
     }
 
+    const proximoId = ultimoIdGerado + 1;
+
     salvarListaOrdenada([
       ...listaParticipantes,
       {
-        id: listaParticipantes.length + 1,
+        id: proximoId,
         nome,
         quantidade: 0,
         borderColor: corAleatoria(),
       },
     ]);
     setNovoParticipante('');
+    setUltimoIdGerado(proximoId);
   };
 
   const subtrairQuantidade = (item) => {
@@ -127,22 +130,18 @@ const Home = () => {
         </View>
 
         <View style={styles.containerListaParticipantes}>
-          <ScrollView>
-            <FlatList
-              data={listaParticipantes}
-              contentContainerStyle={styles.listaParticipantes}
-              renderItem={({item}) => (
-                <ParticipanteItem
-                  item={item}
-                  subtrairQuantidade={() => subtrairQuantidade(item)}
-                  somarQuantidade={() => somarQuantidade(item)}
-                  removerParticipante={() =>
-                    questionarRemoverParticipante(item)
-                  }
-                />
-              )}
-            />
-          </ScrollView>
+          <FlatList
+            data={listaParticipantes}
+            contentContainerStyle={styles.listaParticipantes}
+            renderItem={({item}) => (
+              <ParticipanteItem
+                item={item}
+                subtrairQuantidade={() => subtrairQuantidade(item)}
+                somarQuantidade={() => somarQuantidade(item)}
+                removerParticipante={() => questionarRemoverParticipante(item)}
+              />
+            )}
+          />
         </View>
 
         <View style={styles.containerFinalizar}>
