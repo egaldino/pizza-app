@@ -7,7 +7,7 @@
  */
 import 'react-native-gesture-handler';
 import React from 'react';
-import {Home} from './pages/';
+import {Home, Finalizacao} from './pages/';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 
@@ -31,6 +31,21 @@ const App = () => {
             headerTitleStyle: {
               fontWeight: 'bold',
             },
+          }}
+        />
+        <Stack.Screen
+          name="Finalizacao"
+          component={Finalizacao}
+          options={{
+            title: 'Terminou!!',
+            headerStyle: {
+              backgroundColor: colors.primaria,
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+            headerLeft: null,
           }}
         />
       </Stack.Navigator>

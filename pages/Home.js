@@ -1,16 +1,14 @@
 import React, {useState} from 'react';
 import {
-  Text,
   TextInput,
-  TouchableHighlight,
   FlatList,
   StyleSheet,
   View,
   Alert,
   StatusBar,
 } from 'react-native';
-import ParticipanteItem from '../components/ParticipanteItem';
-
+import {ParticipanteItem, PrimaryButton} from '../components/';
+import globalStyle from '../styles';
 import colors from '../colors.json';
 
 const corAleatoria = () => {
@@ -19,8 +17,67 @@ const corAleatoria = () => {
   return cores[indiceAleatorio];
 };
 
-const Home = () => {
-  const [listaParticipantes, setListaParticipantes] = useState([]);
+const listaParticipantesMock = [
+  {
+    id: 1,
+    nome: 'Rodrigo',
+    quantidade: 5,
+    borderColor: corAleatoria(),
+  },
+  {
+    id: 2,
+    nome: 'Gabriela',
+    quantidade: 3,
+    borderColor: corAleatoria(),
+  },
+  {
+    id: 3,
+    nome: 'Edson',
+    quantidade: 1,
+    borderColor: corAleatoria(),
+  },
+  {
+    id: 4,
+    nome: 'Rodrigo',
+    quantidade: 5,
+    borderColor: corAleatoria(),
+  },
+  {
+    id: 5,
+    nome: 'Gabriela',
+    quantidade: 3,
+    borderColor: corAleatoria(),
+  },
+  {
+    id: 6,
+    nome: 'Edson',
+    quantidade: 1,
+    borderColor: corAleatoria(),
+  },
+  {
+    id: 7,
+    nome: 'Rodrigo',
+    quantidade: 5,
+    borderColor: corAleatoria(),
+  },
+  {
+    id: 8,
+    nome: 'Gabriela',
+    quantidade: 3,
+    borderColor: corAleatoria(),
+  },
+  {
+    id: 9,
+    nome: 'Edson',
+    quantidade: 1,
+    borderColor: corAleatoria(),
+  },
+];
+
+const Home = ({navigation}) => {
+  const [listaParticipantes, setListaParticipantes] = useState(
+    listaParticipantesMock,
+  );
   const [novoParticipante, setNovoParticipante] = useState();
   const [ultimoIdGerado, setUltimoIdGerado] = useState(0);
 
@@ -57,6 +114,10 @@ const Home = () => {
     ]);
     setNovoParticipante('');
     setUltimoIdGerado(proximoId);
+  };
+
+  const finalizarRodizio = () => {
+    navigation.replace('Finalizacao', {listaParticipantes});
   };
 
   const subtrairQuantidade = (item) => {
@@ -109,7 +170,7 @@ const Home = () => {
   };
 
   return (
-    <View style={styles.appBackground}>
+    <View style={globalStyle.appBackground}>
       <StatusBar backgroundColor={colors.primariaDark} />
       <View style={styles.container}>
         <View style={styles.containerAdicionar}>
@@ -121,12 +182,10 @@ const Home = () => {
             onChangeText={(textoDigitado) => setNovoParticipante(textoDigitado)}
           />
 
-          <TouchableHighlight
-            style={styles.addButton}
-            underlayColor={colors.secundaria}
-            onPress={() => addParticipante(novoParticipante)}>
-            <Text style={styles.addButtonText}>Adicionar</Text>
-          </TouchableHighlight>
+          <PrimaryButton
+            nome="Adicionar"
+            onPress={() => addParticipante(novoParticipante)}
+          />
         </View>
 
         <View style={styles.containerListaParticipantes}>
@@ -145,12 +204,12 @@ const Home = () => {
         </View>
 
         <View style={styles.containerFinalizar}>
-          <TouchableHighlight
-            style={styles.addButton}
-            underlayColor={colors.secundaria}
-            onPress={() => addParticipante(novoParticipante)}>
-            <Text style={styles.addButtonText}>Finalizar</Text>
-          </TouchableHighlight>
+          {listaParticipantes.length > 1 && (
+            <PrimaryButton
+              nome="Finalizar"
+              onPress={() => finalizarRodizio()}
+            />
+          )}
         </View>
       </View>
     </View>
@@ -158,10 +217,6 @@ const Home = () => {
 };
 
 const styles = StyleSheet.create({
-  appBackground: {
-    backgroundColor: colors.appBackground,
-    flex: 1,
-  },
   container: {
     flex: 1,
   },
@@ -182,19 +237,6 @@ const styles = StyleSheet.create({
     borderColor: colors.cinzaClaro,
     backgroundColor: colors.cinzaClaro,
     paddingLeft: 15,
-  },
-  addButton: {
-    margin: 10,
-    marginHorizontal: 10,
-    backgroundColor: colors.primaria,
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: 40,
-    borderRadius: 15,
-    elevation: 3,
-  },
-  addButtonText: {
-    color: '#fff',
   },
   listaParticipantes: {
     alignItems: 'center',
