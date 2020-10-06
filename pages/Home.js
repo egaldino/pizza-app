@@ -10,7 +10,7 @@ import {
 import {ParticipanteItem, PrimaryButton} from '../components/';
 import globalStyle from '../styles';
 import colors from '../colors.json';
-import {postRodizio} from '../api';
+import {postRodizio} from '../api/index';
 
 const corAleatoria = () => {
   const cores = colors.participantes;
