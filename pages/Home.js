@@ -10,6 +10,7 @@ import {
 import {ParticipanteItem, PrimaryButton} from '../components/';
 import globalStyle from '../styles';
 import colors from '../colors.json';
+import {postRodizio} from '../api';
 
 const corAleatoria = () => {
   const cores = colors.participantes;
@@ -117,7 +118,15 @@ const Home = ({navigation}) => {
   };
 
   const finalizarRodizio = () => {
-    navigation.replace('Finalizacao', {listaParticipantes});
+    postRodizio(listaParticipantes)
+      .then(() => navigation.replace('Finalizacao', {listaParticipantes}))
+      .catch((erro) => {
+        console.log(erro);
+        Alert.alert(
+          'Erro ao acessar servidor',
+          'Verifique sua conexão ou tente novamente mais tarde',
+        );
+      });
   };
 
   const subtrairQuantidade = (item) => {
